@@ -76,11 +76,17 @@ const postLogin = async (req, res) => {
         res.redirect("/login");
       }
     }
-}
+};
 
-module.exports ={
+const getDashboard = (req, res) => { 
+    res.sendFile('index3.html',{root: './views' });
+
+};
+
+module.exports= {
     getLoginPage,
     getRegisterPage,
     postRegister,
-    postLogin
+    postLogin,
+    getDashboard,
 };
