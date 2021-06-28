@@ -19,6 +19,14 @@ const postRegister= (req,res) => {
     res.json({ message: 'registration success'});
 };
 
+const postRegister =(req,req)=>{
+    const name = req.body.name;
+    const email=req.body.email;
+    const password = req.body.password;
+    const retype = req.body.retype;
+
+}
+
 module.exports ={
     getLoginPage,
     getRegisterPage,
