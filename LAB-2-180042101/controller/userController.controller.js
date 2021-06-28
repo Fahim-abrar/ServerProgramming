@@ -1,6 +1,8 @@
 const User = require('../models/userModel.model');
 const bcrypt = require('bcryptjs');
-cosnt alert = require('alert');
+const alert = require('alert');
+// const LocalStorage = require('node-localstorage').LocalStorage;
+// localStorage = new LocalStorage('./scratch');
 
 const  getLoginPage =(req,res) => {
     res.sendFile('login.html', {root: './views/pages/examples'});
@@ -22,7 +24,7 @@ const postRegister= async (req,res) => {
 
         if(user){
             alert("There is already an user under that email.");
-            re.redirect('/login');
+            res.redirect('/login');
         }
         else if(password.length < 6) {
             alert("Password must be at least 6 characters.");
@@ -37,8 +39,8 @@ const postRegister= async (req,res) => {
             res.redirect('/register');
         }
         else{
-            const salt = await bcrypt.genSaltsync(10);
-            const passwordHash = await bcypt.hash(password, salt);
+            const salt = await bcrypt.genSaltSync(10);
+            const passwordHash = await bcrypt.hash(password, salt);
             const createUser = new User({ 
                  name,
                  email,
@@ -55,13 +57,32 @@ const postRegister= async (req,res) => {
      catch (error){
           console .error(error);
           alert('Something went wrong');
-          res.reddirect('/register');
+          res.redirect('/register');
      }
 };
 
+
+/*const postLogin = async (req, res) => {
+    const email = req.body.email;
+    const pass = req.body.password;
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      const passMatch = await bcrypt.compare(password, existingUser.passwordHash);
+      if (passMatch) {
+        localStorage.setItem("name", existingUser.name);
+        // res.cookie("fullname", existingUser.name);
+  
+        res.redirect("/dashboard");
+      } else {
+        alert("Wrong Password");
+        res.redirect("/login");
+      }
+    }
+}*/
 
 module.exports ={
     getLoginPage,
     getRegisterPage,
     postRegister,
+    //postLogin,
 };
