@@ -1,8 +1,8 @@
 const User = require('../models/userModel.model');
 const bcrypt = require('bcryptjs');
 const alert = require('alert');
-// const LocalStorage = require('node-localstorage').LocalStorage;
-// localStorage = new LocalStorage('./scratch');
+const LocalStorage = require('node-localstorage').LocalStorage;
+localStorage = new LocalStorage('./scratch');
 
 const  getLoginPage =(req,res) => {
     res.sendFile('login.html', {root: './views/pages/examples'});
@@ -62,27 +62,25 @@ const postRegister= async (req,res) => {
 };
 
 
-/*const postLogin = async (req, res) => {
+const postLogin = async (req, res) => {
     const email = req.body.email;
-    const pass = req.body.password;
+    const password = req.body.password;
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       const passMatch = await bcrypt.compare(password, existingUser.passwordHash);
       if (passMatch) {
         localStorage.setItem("name", existingUser.name);
-        // res.cookie("fullname", existingUser.name);
-  
         res.redirect("/dashboard");
       } else {
         alert("Wrong Password");
         res.redirect("/login");
       }
     }
-}*/
+}
 
 module.exports ={
     getLoginPage,
     getRegisterPage,
     postRegister,
-    //postLogin,
+    postLogin
 };
