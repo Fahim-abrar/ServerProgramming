@@ -11,7 +11,7 @@ app.use(express.static('public'));
 
 app.use(userRoutes);
 app.get('/' , (req,res) => {
-    res.sendFile('starter.html', { root: './views' });
+    res.sendFile('index1.html', { root: './views' });
 
 })
 

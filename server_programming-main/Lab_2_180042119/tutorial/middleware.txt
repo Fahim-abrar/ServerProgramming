@@ -1,0 +1,23 @@
+function (req,res,next)
+middleware can- execute any code
+              - can change req/res or end its cycle
+              - can call any other middleware
+              - can redirect a user to a particular page based on the req
+5 types:
+1. application level middleware => app.use()[page not found] signature:req/res/next
+2. router level middleware => router.use() based on the req on that route it redirects to somewhere else  signature:req/res/next
+3. error handling middleware => sends a particular response code or file. it has [req,res,next,err]
+4. built in middleware => bodyparser.json/urlencoded it checks if it has any default json data. we can then use that data bcz we use built in middleware
+                       => styling
+5. 3rd party middleware => to track the response time, we can use 3rd party middleware(Morgan)
+
+
+req->run middleware->res
+static object (doesn't change)=> styling,image
+
+ejs:
+ for js: <% %>
+  for printing something <%= %>
+  for showing html <%- %>
+
+morgan:It simplifies the process of logging requests to your application. You might think of Morgan as a helper that generates request logs.

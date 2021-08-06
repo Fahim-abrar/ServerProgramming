@@ -79,7 +79,7 @@ const postLogin = async (req, res) => {
 };
 
 const getDashboard = (req, res) => { 
-    res.sendFile('index1.html',{root: './views' });
+    res.sendFile('index.html',{root: './views' });
 
 };
 
