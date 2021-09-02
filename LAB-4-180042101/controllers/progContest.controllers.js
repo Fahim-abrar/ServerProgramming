@@ -1,4 +1,7 @@
 const ProgContest = require("../models/ProgContest.models");
+const sendMails = require('../config/mailer');
+var crypto = require('crypto');
+
 const getPC = (req, res) => {
   res.render("prog-contest/registerTeam.ejs", { error: req.flash("error") });
 };
@@ -11,6 +14,7 @@ const postPC = (req, res) => {
   const paid = 0;
   const selected = false;
   let error = "";
+  var verificationCode = crypto.randomBytes(20).toString('hex');
 
   ProgContest.findOne({ teamName: teamName, institute: institute }).then(
     (team) => {
@@ -19,16 +23,34 @@ const postPC = (req, res) => {
         req.flash("error", error);
         res.redirect("/ProgContest/register");
       } else {
-        const participant = new ProgContest({teamName,institute,coachName,coachContact,coachEmail,coachTshirt,TLName,TLContact,TLEmail,TLtshirt,TM1Name,TM1Contact,TM1Email,TM1tshirt,TM2Name,TM2Contact,TM2Email,TM2tshirt,total,paid,selected});
+        const participant = new ProgContest({teamName,institute,coachName,coachContact,coachEmail,coachTshirt,TLName,TLContact,TLEmail,TLtshirt,TM1Name,TM1Contact,TM1Email,TM1tshirt,TM2Name,TM2Contact,TM2Email,TM2tshirt,total,paid,selected,verificationCode});
         participant
           .save()
           .then(() => {
             error = "Team for Programming Contest has been registered successfully!!";
             console.log("save ", error);
+            let allEmails = [
+              { name: TLName, email: TLEmail },
+              { name: TM1Name, email: TM1Email },
+              { name: TM2Name, email: TM2Email },
+              { name: coachName, email: coachEmail },
+            ];
+
+            allEmails.forEach((person) => {
+              const mailOptions = {
+                from: 'fahimabrar1800424101@gmail.com',
+                to: person.email,
+                subject: 'Registration on ICT Fest 2021',
+                text: `You ${person.name} and your team ${teamName} has successfully registered for ICT fest programming contest. Keep this code safe: ${verificationCode}`,
+              };
+
+              sendMails(mailOptions);
+            });
             req.flash("error", error);
             res.redirect("/ProgContest/register");
           })
-          .catch(() => {
+          .catch((err) => {
+            console.log(err);
             error = "Unexpected error";
             console.log("error ", error);
             req.flash("error", error);
